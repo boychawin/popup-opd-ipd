@@ -64,6 +64,43 @@ function DrawerOpdIpd() {
     const [openOPD, setOpenOPD] = React.useState(true);
     const [openIPD, setOpenIPD] = React.useState(true);
 
+    const [openMenu, setOpenMenuPD] = React.useState({
+        type:'OPD',
+        id:''
+    });
+
+
+
+    const handleClickListOPD = (id:any) => {
+        console.log(id)
+        setOpenMenuPD({
+            type:'OPD',
+            id:id
+        });
+    };
+
+
+
+    const handleClickListIPD = (id:any) => {
+        console.log(id)
+        setOpenMenuPD({
+            type:'IPD',
+            id:id
+        });
+    };
+
+
+
+    const handleClickAll = () => {
+        console.log('ALL')
+        setOpenMenuPD({
+            type:'ALL',
+            id:''
+        });
+    };
+
+
+
     const handleClickOPD = () => {
         setOpenOPD(!openOPD);
     };
@@ -101,6 +138,8 @@ function DrawerOpdIpd() {
 
 
 
+
+
     return (
         <Box sx={{ display: 'flex' }}>
             <Drawer
@@ -116,7 +155,9 @@ function DrawerOpdIpd() {
                     <List>
 
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton
+                                onClick={handleClickAll}
+                            >
                                 <ListItemText primary={'ALL'} />
                             </ListItemButton>
                         </ListItem>
@@ -124,8 +165,7 @@ function DrawerOpdIpd() {
 
 
                         <ListItemButton onClick={handleClickOPD}>
-
-                            <ListItemText primary="IPD" />
+                            <ListItemText primary="OPD" />
                             {openOPD ? <IoIosArrowUp /> : <IoIosArrowDown />}
                         </ListItemButton>
                         <Collapse in={openOPD} timeout="auto" unmountOnExit>
@@ -133,6 +173,7 @@ function DrawerOpdIpd() {
                                 {dataOpd.map((value) => (
                                     <ListItemButton
                                         key={value.id}
+                                        onClick={()=>handleClickListOPD(value.id)}
                                     >
                                         <ListItemText primary={`Line item ${value.name}`} />
                                     </ListItemButton>
@@ -149,6 +190,7 @@ function DrawerOpdIpd() {
                                 {dataIpd.map((value) => (
                                     <ListItemButton
                                         key={value.id}
+                                        onClick={()=>handleClickListIPD(value.id)}
                                     >
                                         <ListItemText primary={`Line item ${value.name}`} />
                                     </ListItemButton>
@@ -156,42 +198,13 @@ function DrawerOpdIpd() {
                             </List>
                         </Collapse>
 
-
-
-
-
                     </List>
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-                    enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-                    imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-                    Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-                    Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-                    nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-                    leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-                    feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-                    consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                    sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                    eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                    neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                    tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                    sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                    tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                    gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                    et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                    tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                    eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                    posuere sollicitudin aliquam ultrices sagittis orci a.
-                </Typography>
+                <PageOPD openMenu={openMenu} />
+                <PageIPD openMenu={openMenu}/>
+
             </Box>
         </Box>
     );
@@ -199,23 +212,59 @@ function DrawerOpdIpd() {
 
 
 
-function PageOPD() {
+function PageOPD({openMenu}:any) {
 
+    if(openMenu.type != 'OPD'){
+        return <></>
+    }
 
     return (
         <>
             OPD
+
+            <Typography paragraph>
+                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
+                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
+                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
+                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
+                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
+                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
+                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
+                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
+                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
+                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
+                posuere sollicitudin aliquam ultrices sagittis orci a.
+            </Typography>
+
         </>
     )
 }
 
 
-function PageIPD() {
+function PageIPD({openMenu}:any) {
 
-
+    if(openMenu.type != 'IPD' ){
+        return <></>
+    }
     return (
         <>
             IPD
+
+            <Typography paragraph>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+                enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+                imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+                Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+                Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+                nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+                leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+                feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+                consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+                sapien faucibus et molestie ac.
+            </Typography>
+
         </>
     )
 }
