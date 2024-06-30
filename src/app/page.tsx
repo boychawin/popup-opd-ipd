@@ -9,9 +9,6 @@ import Button from '@mui/material/Button';
 export default function Home() {
 
   const [open, setOpen] = React.useState(false);
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
-
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -48,7 +45,6 @@ export default function Home() {
         <DialogIpdOpd
           open={open}
           handleClose={handleClose}
-          descriptionElementRef={descriptionElementRef}
         />
 
 

@@ -16,23 +16,37 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    DialogContentText,
     Collapse,
 } from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
+import Slide from '@mui/material/Slide';
+import AccordionTransition from './accordion';
 
-function DialogIpdOpd({ open, handleClose, descriptionElementRef }: any) {
+
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
+
+function DialogIpdOpd({ open, handleClose }: any) {
 
 
     return (
         <>
             <Dialog
                 fullScreen
-                fullWidth
                 open={open}
                 onClose={handleClose}
                 scroll="paper"
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
+                TransitionComponent={Transition}
             >
                 <DialogTitle id="scroll-dialog-title" sx={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center' }} >
                     กำหนดการนัดหมาย
@@ -41,15 +55,15 @@ function DialogIpdOpd({ open, handleClose, descriptionElementRef }: any) {
                     </div>
                 </DialogTitle>
                 <DialogContent dividers={false}>
-                    <DialogContentText
+                    {/* <DialogContentText
                         id="scroll-dialog-description"
                         ref={descriptionElementRef}
                         tabIndex={-1}
-                    >
+                    > */}
 
-                        <DrawerOpdIpd />
+                    <DrawerOpdIpd />
 
-                    </DialogContentText>
+                    {/* </DialogContentText> */}
                 </DialogContent>
             </Dialog>
         </>
@@ -65,37 +79,36 @@ function DrawerOpdIpd() {
     const [openIPD, setOpenIPD] = React.useState(true);
 
     const [openMenu, setOpenMenuPD] = React.useState({
-        type:'OPD',
-        id:''
+        type: 'OPD',
+        id: ''
     });
 
 
 
-    const handleClickListOPD = (id:any) => {
-        console.log(id)
+    const handleClickListOPD = (id: any) => {
+   
         setOpenMenuPD({
-            type:'OPD',
-            id:id
+            type: 'OPD',
+            id: id
         });
     };
 
 
 
-    const handleClickListIPD = (id:any) => {
-        console.log(id)
+    const handleClickListIPD = (id: any) => {
+   
         setOpenMenuPD({
-            type:'IPD',
-            id:id
+            type: 'IPD',
+            id: id
         });
     };
 
 
 
     const handleClickAll = () => {
-        console.log('ALL')
         setOpenMenuPD({
-            type:'ALL',
-            id:''
+            type: 'ALL',
+            id: ''
         });
     };
 
@@ -173,7 +186,7 @@ function DrawerOpdIpd() {
                                 {dataOpd.map((value) => (
                                     <ListItemButton
                                         key={value.id}
-                                        onClick={()=>handleClickListOPD(value.id)}
+                                        onClick={() => handleClickListOPD(value.id)}
                                     >
                                         <ListItemText primary={`Line item ${value.name}`} />
                                     </ListItemButton>
@@ -190,7 +203,7 @@ function DrawerOpdIpd() {
                                 {dataIpd.map((value) => (
                                     <ListItemButton
                                         key={value.id}
-                                        onClick={()=>handleClickListIPD(value.id)}
+                                        onClick={() => handleClickListIPD(value.id)}
                                     >
                                         <ListItemText primary={`Line item ${value.name}`} />
                                     </ListItemButton>
@@ -202,8 +215,8 @@ function DrawerOpdIpd() {
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <PageOPD openMenu={openMenu} />
-                <PageIPD openMenu={openMenu}/>
+                <PageOPD data={dataOpd} openMenu={openMenu} />
+                <PageIPD data={dataIpd} openMenu={openMenu} />
 
             </Box>
         </Box>
@@ -212,59 +225,36 @@ function DrawerOpdIpd() {
 
 
 
-function PageOPD({openMenu}:any) {
+function PageOPD({ openMenu, data }: any) {
 
-    if(openMenu.type != 'OPD'){
+    if (openMenu.type == 'IPD') {
         return <></>
     }
 
     return (
         <>
-            OPD
-
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
+            <Typography variant='h1'>
+                OPD
             </Typography>
 
+            <AccordionTransition data={data} openMenu={openMenu} />
         </>
     )
 }
 
 
-function PageIPD({openMenu}:any) {
+function PageIPD({ openMenu, data }: any) {
 
-    if(openMenu.type != 'IPD' ){
+    if (openMenu.type == 'OPD') {
         return <></>
     }
     return (
         <>
-            IPD
-
-            <Typography paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-                enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-                imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-                Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-                Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-                nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-                leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-                feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-                consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                sapien faucibus et molestie ac.
+            <Typography variant='h1'>
+                IPD
             </Typography>
 
+            <AccordionTransition data={data} openMenu={openMenu} />
         </>
     )
 }
